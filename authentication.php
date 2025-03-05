@@ -15,6 +15,12 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 $secret = 'your-256-bit-secret';
 
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['message' => 'Methode non autorisee, utilisez POST.' . $_SERVER['REQUEST_METHOD']]);
