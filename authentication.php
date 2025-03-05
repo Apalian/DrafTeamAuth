@@ -38,6 +38,7 @@ if ($login && $password) {
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
+        $console.log($login);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         if (password_verify($password, $user['password'])) {
             $headers = [
