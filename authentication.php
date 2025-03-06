@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $payload = [
                     'sub' => $login,
                     'exp' => time() + 86400,
-                    'role' => user['role']
+                    'role' => $user['role']
                 ];
 
                 $jwt = generate_jwt($headers, $payload, $secret);
