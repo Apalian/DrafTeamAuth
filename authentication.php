@@ -27,16 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = isset($input['login']) ? trim($input['login']) : null;
     $password = isset($input['password']) ? trim($input['password']) : null;
 
-    if (!$login || !$password) {
-        http_response_code(400);
-        echo json_encode([
-            "status" => "error",
-            "status_code" => 400,
-            "status_message" => "[Drafteam API] : Le login et le mot de passe sont requis"
-        ]);
-        exit;
-    }
-
     if ($login && $password) {
         $stmt = $linkpdo->prepare("SELECT * FROM user WHERE login = :login");
         $stmt->bindParam(':login', $login, PDO::PARAM_STR);
@@ -78,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode([
                 "status" => "error",
                 "status_code" => 401,
-                "status_message" => "[Drafteam API] : Identifiants invalides"
+                "status_message" => "[Drafteam API] : Le login et le mot de passe sont requis"
             ]);
         }
     } else {
