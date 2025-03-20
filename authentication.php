@@ -10,7 +10,7 @@ require_once 'connexionDB.php';
 
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 $secret = 'your-256-bit-secret';
@@ -24,8 +24,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents("php://input"), true);
 
-    $login = isset($input['login']) ? $input['login'] : null;
-    $password = isset($input['password']) ? $input['password'] : null;
+    $login = isset($input['login']) ? trim($input['login']) : null;
+    $password = isset($input['password']) ? trim($input['password']) : null;
+
+    if (!$login || !$password) {
+        http_response_code(400);
+        echo json_encode([
+            "status" => "error",
+            "status_code" => 400,
+            "status_message" => "[Drafteam API] : Le login et le mot de passe sont requis"
+        ]);
+        exit;
+    }
 
     if ($login && $password) {
         $stmt = $linkpdo->prepare("SELECT * FROM user WHERE login = :login");
